@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>じゃんけん</title>
+</head>
+<body>
+
+<header>
+  <h1>じゃんけん</h1>
+</header>
+
+<main>
+  <ul>
+    <li id="rock_btn">グー</li>
+    <li id="scissors_btn">チョキ</li>
+    <li id="paper_btn">パー</li>
+  </ul>
+  <div>コンピュータの出した手は？「<span id="pc_hands">なに？</span>」</div>
+  <div>勝敗結果は・・・<span id="judgment">こちら</span></div>
+</main>
+
+<footer></footer>
+<script>
+//じゃんけん用のSCRIPT
+  let pc_hands = '';
+  let user_hands = '';
+
+  function pc_hand_roulette(){
+    const rand_num = Math.ceil(Math.random() * 3);
+    if(rand_num == 1){
+      pc_hands = 'グー！';
+    } else if(rand_num == 2){
+      pc_hands = 'チョキ！';
+    } else {
+      pc_hands = 'パー！';
+    }
+    $('#pc_hands').text(pc_hands);
+  }
+
+  function janken_judgment(){
+    if(pc_hands == user_hands){
+      $('#judgment').text('あいこ！（もう1回出す手を選んで）');
+    } else if (pc_hands == 'グー！' && user_hands == 'チョキ！'){
+      $('#judgment').text('あなたの負け！');
+    } else if (pc_hands == 'グー！' && user_hands == 'パー！'){
+      $('#judgment').text('あなたの勝ち！');
+    } else if (pc_hands == 'チョキ！' && user_hands == 'パー！'){
+      $('#judgment').text('あなたの負け！');
+    } else if (pc_hands == 'チョキ！' && user_hands == 'グー！'){
+      $('#judgment').text('あなたの勝ち！');
+    } else if (pc_hands == 'パー！' && user_hands == 'グー！'){
+      $('#judgment').text('あなたの負け！');
+    } else if (pc_hands == 'パー！' && user_hands == 'チョキ！'){
+      $('#judgment').text('あなたの勝ち！');
+    }
+  }
+
+  $('#rock_btn').on('click', function(){
+    user_hands = 'グー！'
+    pc_hand_roulette();
+    janken_judgment();
+  })
+
+  $('#scissors_btn').on('click', function(){
+    user_hands = 'チョキ！'
+    pc_hand_roulette();
+    janken_judgment();
+  })
+
+  $('#paper_btn').on('click', function(){
+    user_hands = 'パー！'
+    pc_hand_roulette();
+    janken_judgment();
+  })
+
+
+  
+</script>
+</body>
+</html>

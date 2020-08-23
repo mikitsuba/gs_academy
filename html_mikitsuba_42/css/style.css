@@ -1,0 +1,382 @@
+/************* header *************/
+.wrapper{
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.wrapper.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+    border: solid 1px #cacaca;
+}
+
+.header_logo{
+    padding-left: 50px ;
+}
+
+.nav-list{
+    display: flex;
+    padding-right: 25px;
+}
+
+.nav-item{
+    font-size: 21px;
+    text-transform: uppercase;
+    padding: 0 25px;
+}
+
+/* ボタンの縦幅を広くするために、paddingをaの方で設定 */
+.nav-item>a {
+    text-decoration: none;
+    color: #222222;
+    display: block;
+    padding: 50px 0;
+}
+
+/************* eyecatch *************/
+.wrapper.eyecatch-wrapper {
+    height: 440px;
+    background: url(../img/mainbg.png) no-repeat center center / 100% 100%;
+}
+
+.catch-container {
+    padding: 169px 0;
+    text-align: center;
+}
+
+h1.catch-copy {
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+h2.shop-name {
+    font-size: 32px;
+    color: white;
+}
+
+/************* about *************/
+.about-container{
+    text-align: center;
+    margin: 60px 0 80px;
+}
+
+h3.subheading.subheading-about {
+    font-size: 24px;
+    color: #ffd61a;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+h4.jp-title-about {
+    font-size: 18px;
+    color: #222222;
+    margin-bottom: 60px;
+}
+
+p.about-item {
+    font-size: 16px;
+    color: #222222;
+    line-height: 1.75;
+    margin-bottom: 40px;
+}
+
+.img-container {
+    display: flex;
+}
+
+img.img-item {
+    width: 25%;
+}
+
+/************* course *************/
+.course-container{
+    margin: 60px 0;
+    text-align: center;
+}
+
+h3.subheading.subheading-course {
+    font-size: 24px;
+    color: #222222;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+p.course-title-text {
+    font-size: 16px;
+    color: #222222;
+    line-height: 1.75;
+}
+
+/* 画像とテキストを横並べに */
+.course-item {
+    display: flex;
+}
+
+/* 画像とテキストの横幅を半々に */
+img.course-picture {
+    width: 50%;
+}
+
+/* 画像とテキストの横幅を半々に */
+/* course-text-left(/right)を、course-text-containerの中で上下の中央に */
+.course-text-container {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.course-text-right {
+    width: 430px;
+    padding-left: 50px;
+}
+
+/* ボックス要素を右寄せにするために、margin 0 0 0 auto */
+.course-text-left {
+    width: 430px;
+    padding-right: 50px;
+    margin: 0 0 0 auto;
+}
+
+h4.course-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 40px;
+}
+
+p.course-textbox {
+    font-size: 16px;
+    color: #222222;
+    line-height: 1.75;
+}
+
+/************* news *************/
+.news-title {
+    text-align: center;
+    margin: 60px 0;
+}
+
+h3.subheading.subheading-news {
+    font-size: 24px;
+    color: #ffd61a;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+h4.jp-title-news {
+    font-size: 18px;
+    color: #222222;
+}
+
+.news-items{
+    display: flex;
+    justify-content: center;
+}
+
+.news-item {
+    width: 300px;
+}
+
+.news-item1, .news-item2{
+    margin-right: 30px;
+}
+
+img.news-picture {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+p.news-item-date {
+    font-size: 16px;
+    color: #222222;
+    margin-bottom: 24px;
+}
+
+p.news-item-text {
+    font-size: 16px;
+    color: #222222;
+    line-height: 1.75;
+}
+
+.btn {
+    display: block;
+    width: 300px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    background-color: #ffd61a;
+}
+
+.btn:hover {
+    background-color:blue;
+    letter-spacing: 5px;
+}
+
+.more-btn{
+    margin: 60px auto;
+}
+
+/************* access *************/
+.access-title {
+    text-align: center;
+    margin: 60px 0;
+}
+
+h3.subheading.subheading-access {
+    font-size: 24px;
+    color: #222222;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+h4.jp-title-access {
+    font-size: 18px;
+    color: #222222;
+}
+
+.googlemap {
+    display: block;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 60px;
+}
+
+.access-information {
+    display: flex;
+    justify-content: center;
+    margin: 60px 0;
+}
+
+.access-information-row {
+    font-size: 16px;
+    color: #222222;
+    /* line-heightを50pxにすると、行間を30pxとするのは両立できないような・・・？ */
+    line-height: 50px;
+}
+
+td.access-information-contents {
+    padding-left: 40px;
+}
+
+/************* contact *************/
+.contact-container {
+    padding: 60px 0 30px;
+}
+
+.contact-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+h3.subheading.subheading-contact {
+    font-size: 24px;
+    color: #222222;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+h4.jp-title-contact {
+    font-size: 18px;
+    color: #222222;
+    margin-bottom: 60px;
+}
+
+p.contact-top-text {
+    font-size: 16px;
+    color: #222222;
+    line-height: 1.75;
+    margin-bottom: 40px;
+}
+
+.contact-form {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* 詳細だけ、上のスペースが広くなっているのはなぜだろう */
+td.contact-form-heading {
+    width: 240px;
+    line-height: 1.75;
+    color: #222222;
+    padding: 16px 64px 0 16px;
+    border: solid 2px #bfbfbf;
+    border-left-style: none;
+}
+
+td.contact-form-item {
+    box-sizing: border-box;
+    width: 400px;
+    color: #222222;
+    padding: 8px 0 8px 8px;
+    border: solid 2px #bfbfbf;
+    border-right-style: none;
+}
+
+.contact-form-parts {
+    box-sizing: border-box;
+    width: 328px;
+    height: 36px;
+    border: solid 1px #bfbfbf;
+    font-size: 16px;
+}
+
+select.contact-form-parts{
+    margin-bottom: 32px;
+}
+
+label.motive-label {
+    display: block;
+    padding: 12px 0;
+}
+
+input[type*="radio"]{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0 8px 0 0;
+    border-radius: 20%;
+    vertical-align: -2px;
+}
+
+input[type*="radio"]:checked{
+    background-color: #a0a0a0;
+}
+
+textarea#contact-detail {
+    width: 328px;
+    font-size: 16px;
+}
+
+input.btn.submit-btn {
+    border: none;
+    margin: 30px auto 140px;
+}
+
+/************* footer *************/
+.footer-wrapper {
+    background-color: #707070;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.copyrights {
+    font-size: 14px;
+    color: white;
+}
