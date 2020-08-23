@@ -5,22 +5,86 @@
 <meta name="viewport" content="width=device-width">
 <script src="js/jquery-2.1.3.min.js"></script>
 <link rel="stylesheet" href="css/sample.css">
-<title>じゃんけん</title>
+<title>じゃんけん & 30ゲーム</title>
 </head>
 <body>
 
 <header>
-  <h1>じゃんけん</h1>
+  <h1 class="janken-title">じゃんけん & 30ゲーム</h1>
 </header>
 
 <main>
-  <ul>
-    <li id="rock_btn">グー</li>
-    <li id="scissors_btn">チョキ</li>
-    <li id="paper_btn">パー</li>
-  </ul>
-  <div>コンピュータの出した手は？「<span id="pc_hands">なに？</span>」</div>
-  <div>勝敗結果は・・・<span id="judgment">こちら</span></div>
+  <section id="janken">
+    <div class="wrapper janken-wrapper">
+      <h2 class="small-title">じゃんけん</h2>
+      <ul>
+        <li id="rock_btn">グー</li>
+        <li id="scissors_btn">チョキ</li>
+        <li id="paper_btn">パー</li>
+      </ul>
+      <div class="janken-result">
+        <div>コンピュータの出した手は？「<span id="pc_hands">なに？</span>」</div>
+        <div>勝敗結果は・・・<span id="judgment"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="30-game">
+    <div class="wrapper 30-game-wrapper">
+      <h2 class="small-title">30ゲーム</h2>
+      <div class="balloon-container">
+        <div class="balloon-instruction">
+          <p class="instruction">1ターンに3つまで数字を選んで、<span>OK!</span>を押してね！</p>
+        </div>
+      </div>
+      <div class="turn-box">
+        <p class="turn"><span>あなた</span>の番</p>
+        <span class="ok-btn">OK!</span>
+      </div>
+      <table class="numbers">
+        <tr>
+          <td class="number">1</td>
+          <td class="number">2</td>
+          <td class="number">3</td>
+          <td class="number">4</td>
+          <td class="number">5</td>
+          <td class="number">6</td>
+          <td class="number">7</td>
+          <td class="number">8</td>
+          <td class="number">9</td>
+          <td class="number">10</td>
+        </tr>
+        <tr>
+          <td class="number">11</td>
+          <td class="number">12</td>
+          <td class="number">13</td>
+          <td class="number">14</td>
+          <td class="number">15</td>
+          <td class="number">16</td>
+          <td class="number">17</td>
+          <td class="number">18</td>
+          <td class="number">19</td>
+          <td class="number">20</td>
+        </tr>
+        <tr>
+          <td class="number">21</td>
+          <td class="number">22</td>
+          <td class="number">23</td>
+          <td class="number">24</td>
+          <td class="number">25</td>
+          <td class="number">26</td>
+          <td class="number">27</td>
+          <td class="number">28</td>
+          <td class="number">29</td>
+          <td class="number">30</td>
+        </tr>
+      </table>
+      <div class="result-box">
+        <p class="result">あなたの勝ち</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer></footer>
@@ -77,6 +141,7 @@
     janken_judgment();
   })
 
+// 30ゲーム用のscript
 
   
 </script>
