@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="turn-box">
-        <p class="turn"><span id="turn">あなた</span>の番</p>
+        <p class="turn"><span id="turn"></span>の番</p>
         <span id="ok-btn">OK!</span>
       </div>
       <table class="numbers">
@@ -89,6 +89,7 @@
 
 <footer></footer>
 <script>
+
 //じゃんけん用のSCRIPT
   let pc_hands = '';
   let user_hands = '';
@@ -123,18 +124,21 @@
     }
   }
 
+  // グーをクリックした場合
   $('#rock_btn').on('click', function(){
     user_hands = 'グー！'
     pc_hand_roulette();
     janken_judgment();
   })
 
+  // チョキをクリックした場合
   $('#scissors_btn').on('click', function(){
     user_hands = 'チョキ！'
     pc_hand_roulette();
     janken_judgment();
   })
 
+  // パーをクリックした場合
   $('#paper_btn').on('click', function(){
     user_hands = 'パー！'
     pc_hand_roulette();
@@ -142,8 +146,6 @@
   })
 
 // 30ゲーム用のscript
-
-//ターンの変更（自ターンのときのみ、数字を押せる）
   //ターンの表示
   let player_turn = true; // ターンを定義。trueがplayerでfalseがcom。デフォルトはplayer
   function turn_change(){
@@ -156,85 +158,88 @@
     }
   }
 
-//playerのターン
-  let button_num = 0; // 選択された数字
-  let button_status_array = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]; //選択された数字の状態
-  // playerのターンで、相手がすでに選択した数字からの距離が3以内である場合に、数字を選択することができる。また、playerのターン内であれば、もう一度クリックすることにより、選択を解除することができる
-  function player_click(button){
-    button_num = $(button).attr('id');
-    button_num = Number(button_num.substr(6));
-
-    if(player_turn && button_status_array[button_num - 1] == 'tentative'){
-      $('#number' + button_num).css('background-color', '');
-      $('#number' + button_num).css('color', '');
-      button_status_array[button_num - 1] = true;
-    } else if(player_turn && button_status_array[button_num - 1] && (button_num <= 3 || !button_status_array[button_num - 4])){
-      $('#number' + button_num).css('background-color', 'lightskyblue');
-      $('#number' + button_num).css('color', 'gray');
-      button_status_array[button_num - 1] = 'tentative';
-    } else if(player_turn && !button_status_array[button_num - 1]) {
-      alert('その数字はもう選択済みです');
-    } else if(player_turn) {
-      alert('1回のターンで選択できる数字は3つ以内の連番のみです');
-    } else {
-      alert('COMのターンです。ちょっと待ってね！');
-    }
-  }
-
 // ここから実行
   // 初期状態のターンの表示
   turn_change();
 
+  //playerのターンの処理開始
+  let button_num = 0; // 選択された数字
+  let button_status_array = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]; //選択された数字の状態
+
   $('td.number').on('click', function(){
-    player_click(this);
+    // 選択された数字のidを取得
+    button_num = $(this).attr('id');
+    button_num = Number(button_num.substr(6));
+
+    // 数字をクリックすることにより、当該数字を仮選択している状態とする（tentativeとしている）
+    if(player_turn && button_status_array[button_num - 1] == 'tentative'){    // 仮選択されている数字をもう1回クリックすると、元の状態に戻る
+      $('#number' + button_num).css('background-color', '');
+      $('#number' + button_num).css('color', '');
+      button_status_array[button_num - 1] = true;
+    } else if(player_turn && button_status_array[button_num - 1] && (button_num <= 3 || !button_status_array[button_num - 4])){ // クリックした数字が、まだ選択されておらず、すでに選択されている数字から3以内の距離にある場合は、仮選択することができる
+      $('#number' + button_num).css('background-color', 'lightskyblue');
+      $('#number' + button_num).css('color', 'gray');
+      button_status_array[button_num - 1] = 'tentative';
+    } else if(player_turn && !button_status_array[button_num - 1]) { // 選択済みの数字をクリックしたらalertが出る
+      alert('その数字はもう選択済みです');
+    } else if(player_turn) {
+      alert('1回のターンで選択できる数字は3つ以内の連番のみです');
+    }
   })
 
+  // OKボタンのクリックにより、comのターンに突入
   $('#ok-btn').on('click', function(){
-    // # TODO: そのターンに何も選択されていない場合、OKを押せないようにする
     // # TODO: 選択した数字が連番の場合に、OKを押せるようにする
-    for(let i = 0; i < button_status_array.length; i++){
-      if(button_status_array[i] == 'tentative'){
-        button_status_array.splice(i, 1, false);
+    // 選択数字がない場合には、alertが出るようにする。また、3つ以内の連番が選択されていない場合にもalertが出るようにする。それ以外の場合に、comのターンに入る
+    if(button_status_array.indexOf('tentative') == -1){
+      alert('数字を選択してください');
+    } else if(button_status_array[(button_status_array.indexOf(true)) + 1] == 'tentative' || button_status_array[(button_status_array.indexOf(true)) + 2] == 'tentative'){
+      alert('数字は連番で選択してください')
+    } else {
+      for(let i = 0; i < button_status_array.length; i++){
+        if(button_status_array[i] == 'tentative'){
+          button_status_array.splice(i, 1, false);
+        }
       }
-    }
+      // comのターンに変更
+      player_turn = false;
+      turn_change();
 
-    // comのターンに変更
-    player_turn = false;
-    turn_change();
-
-    // 1秒待機することにする
-    const d1 = new Date();
-    while (true) {
-      const d2 = new Date();
-      if (d2 - d1 > 1000) {
-        break;
+      // 1秒待機することにする
+      const d1 = new Date();
+      while (true) {
+        const d2 = new Date();
+        if (d2 - d1 > 1000) {
+          break;
+        }
       }
+
+      // comのターンの処理開始
+      // すでに選択されている数字から、3つ以内の数字をランダムで選択する
+      const com_choice = Math.floor(Math.random() * 3);
+      const first_true_number = button_status_array.indexOf(true);
+
+      for(let i = 0; i <= com_choice; i++){
+        button_status_array[first_true_number + i] = false;
+        $('#number' + (first_true_number + (i + 1))).css('background-color', 'pink');
+        $('#number' + (first_true_number + (i + 1))).css('color', 'gray');
+      }
+
+      // 勝敗の判定。30をcomが選択した場合はplayerの勝ち、30は選択していないが29を選択した場合（つまり、playerは30を選択するしかない場合）はplayerの負けとした
+      if(!button_status_array[29]){
+        $('#result').text('あなたの勝ち!!');
+        $('#result').css('color', 'red');
+      } else if(!button_status_array[28]){
+        $('#result').text('あなたの負け...');
+        $('#result').css('color', 'blue');
+      }
+
+      // playerのターンに変更
+      player_turn = true;
+      turn_change();
+
+      //必勝法のアルゴリズム
     }
-
-    // comのターンの処理開始
-    // すでに選択されている数字から、3つ以内の数字をランダムで選択する
-    const com_choice = Math.floor(Math.random() * 3);
-    const first_true_number = button_status_array.indexOf(true);
-
-    for(let i = 0; i <= com_choice; i++){
-      button_status_array[first_true_number + i] = false;
-      $('#number' + (first_true_number + (i + 1))).css('background-color', 'pink');
-      $('#number' + (first_true_number + (i + 1))).css('color', 'gray');
-    }
-
-    if(!button_status_array[29]){
-      $('#result').text('あなたの勝ち!!');
-      $('#result').css('color', 'red');
-    } else if(!button_status_array[28]){
-      $('#result').text('あなたの負け...');
-      $('#result').css('color', 'blue');
-    }
-
-    // playerのターンに変更
-    player_turn = true;
-    turn_change();
-
-    //必勝法のアルゴリズム
   })
 
 </script>
