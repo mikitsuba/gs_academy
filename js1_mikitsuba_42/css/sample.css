@@ -51,6 +51,25 @@ li:hover{
 }
 
 /* 30-game section */
+.mode-select{
+    margin: 30px 0;
+    text-align: center;
+}
+
+.mode-select>span{
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+    margin: 0 10px;
+    border: solid 2px gray;
+    cursor: pointer;
+}
+
+.easy-mode{
+    background-color: navy;
+    color:white;
+}
+
 .balloon-container {
     text-align: center;
 }
