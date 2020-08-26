@@ -80,7 +80,7 @@
         </tr>
       </table>
       <div class="result-box">
-        <p class="result">あなたの勝ち</p>
+        <p class="result" id="result"></p>
       </div>
     </div>
   </section>
@@ -146,7 +146,6 @@
 //ターンの変更（自ターンのときのみ、数字を押せる）
   //ターンの表示
   let player_turn = true; // ターンを定義。trueがplayerでfalseがcom。デフォルトはplayer
-
   function turn_change(){
     if(player_turn){
       $('#turn').text('あなた');
@@ -160,7 +159,6 @@
 //playerのターン
   let button_num = 0; // 選択された数字
   let button_status_array = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]; //選択された数字の状態
-
   // playerのターンで、相手がすでに選択した数字からの距離が3以内である場合に、数字を選択することができる。また、playerのターン内であれば、もう一度クリックすることにより、選択を解除することができる
   function player_click(button){
     button_num = $(button).attr('id');
@@ -183,6 +181,7 @@
     }
   }
 
+// ここから実行
   // 初期状態のターンの表示
   turn_change();
 
@@ -193,7 +192,6 @@
   $('#ok-btn').on('click', function(){
     // # TODO: そのターンに何も選択されていない場合、OKを押せないようにする
     // # TODO: 選択した数字が連番の場合に、OKを押せるようにする
-    // button_status_arrayの中で、tentativeになっているものを、falseに置換する
     for(let i = 0; i < button_status_array.length; i++){
       if(button_status_array[i] == 'tentative'){
         button_status_array.splice(i, 1, false);
@@ -204,11 +202,11 @@
     player_turn = false;
     turn_change();
 
-    // 2秒待機することにする
+    // 1秒待機することにする
     const d1 = new Date();
     while (true) {
       const d2 = new Date();
-      if (d2 - d1 > 2000) {
+      if (d2 - d1 > 1000) {
         break;
       }
     }
@@ -217,7 +215,6 @@
     // すでに選択されている数字から、3つ以内の数字をランダムで選択する
     const com_choice = Math.floor(Math.random() * 3);
     const first_true_number = button_status_array.indexOf(true);
-    console.log(first_true_number);
 
     for(let i = 0; i <= com_choice; i++){
       button_status_array[first_true_number + i] = false;
@@ -225,16 +222,20 @@
       $('#number' + (first_true_number + (i + 1))).css('color', 'gray');
     }
 
+    if(!button_status_array[29]){
+      $('#result').text('あなたの勝ち!!');
+      $('#result').css('color', 'red');
+    } else if(!button_status_array[28]){
+      $('#result').text('あなたの負け...');
+      $('#result').css('color', 'blue');
+    }
+
     // playerのターンに変更
     player_turn = true;
     turn_change();
 
-    console.log(button_status_array);
     //必勝法のアルゴリズム
   })
-
-//勝敗の判定（これはfunctionにして、player clickとOKのどちらにも入れるか）
-
 
 </script>
 </body>
