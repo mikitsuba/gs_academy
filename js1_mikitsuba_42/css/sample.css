@@ -139,9 +139,29 @@ td.number:hover {
     background-color: gray;
 }
 
+.result-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 p.result {
     text-align: center;
     font-size: 50px;
+    font-weight: bold;
+}
+
+.result-box>span {
+    display: block;
+    cursor: pointer;
+    margin-left: 50px;
+    background-color: white;
+    font-size: 32px;
+}
+
+.result-box>span:hover {
+    background-color: navy;
+    color: white;
     font-weight: bold;
 }
 

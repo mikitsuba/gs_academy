@@ -85,6 +85,7 @@
       </table>
       <div class="result-box">
         <p class="result" id="result"></p>
+        <span class="result" id="play-again"></span>
       </div>
     </div>
   </section>
@@ -286,12 +287,24 @@
       }
 
       // 勝敗の判定。30をcomが選択した場合はplayerの勝ち、30は選択していないが29を選択した場合（つまり、playerは30を選択するしかない場合）はplayerの負けとした
+      // リセットボタンを表示させる関数。勝敗の判定がされたときに、表示されるにようにする
+      function show_reset(){
+        $('#play-again').text('もう一回？');
+        $('#play-again').css('padding', '5px 10px');
+        $('#play-again').css('border', 'solid 2px gray');
+        $('#play-again').css('border-radius', '15px');
+      }
+
       if(!button_status_array[29]){
         $('#result').text('あなたの勝ち!!');
         $('#result').css('color', 'red');
+        show_reset();
       } else if(!button_status_array[28]){
         $('#result').text('あなたの負け...');
         $('#result').css('color', 'blue');
+        $('#number30').css('background-color', 'lightskyblue');
+        $('#number30').css('color', 'gray');
+        show_reset();
       }
 
       // playerのターンに変更
@@ -301,6 +314,18 @@
       // 反省点：
       // button_status_arrayの値と、選択状態の見た目を完全に連動させるべきだった
       // その方が直感的。そして、状態をリセットするのも簡単
+    }
+  })
+
+  // // リセットボタン
+  $('#play-again').on('click', function(){
+    button_status_array = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
+    for(let i = 1; i <= 30; i++){
+      $('#number' + i).css('background-color', '');
+      $('#number' + i).css('color', '');
+      $('#result').text('');
+      $('#play-again').text('');
+      $('#play-again').css('border', '');
     }
   })
 
