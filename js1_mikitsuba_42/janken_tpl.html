@@ -155,7 +155,7 @@
   // デフォルトはイージーモード
   let difficulty = 'easy';
   $('#easy-mode').on('click', function(){
-    difficulty = 'easy'
+    difficulty = 'easy';
     $('#hard-mode').css('background-color', 'white');
     $('#hard-mode').css('color', 'black');
     $('#easy-mode').css('background-color', 'navy');
@@ -221,7 +221,7 @@
     if(button_status_array.indexOf('tentative') == -1){
       alert('数字を選択してください');
     } else if(button_status_array[(button_status_array.indexOf(true)) + 1] == 'tentative' || button_status_array[(button_status_array.indexOf(true)) + 2] == 'tentative'){
-      alert('数字は連番で選択してください')
+      alert('数字は連番で選択してください');
     } else {
       for(let i = 0; i < button_status_array.length; i++){
         if(button_status_array[i] == 'tentative'){
