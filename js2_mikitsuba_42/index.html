@@ -11,8 +11,8 @@
 <h1>MemoPad</h1>
 </header>
 <main>
-    <input type="text" id="title">
-    <textarea id="memo"></textarea>
+    <input type="text" id="title" placeholder="タイトルを書いてね">
+    <textarea id="memo" placeholder="内容を書いてね"></textarea>
     <ul>
         <li id="save">Save</li>
         <li id="clear">Clear</li>
@@ -30,12 +30,14 @@ $('#save').on('click', function() {
     localStorage.setItem(title, memo);
 
     $('#list').append('<tr><th>' + title + '</th><td> ' + memo + ' </td></tr>');
+    $('#list').css('border', '1px solid #8dc3f5');
 });
 
 //2.clear クリックイベント
 $('#clear').on('click', function() {
     localStorage.clear();
     $('#list').empty();
+    $('#list').css('border', '');
 });
 
 //3.ページ読み込み：保存データ取得表示
@@ -44,6 +46,7 @@ for (let i = 0; i < localStorage.length; i++) {
     const memo = localStorage.getItem(title);
 
     $('#list').append('<tr><th>' + title + '</th><td> ' + memo + ' </td></tr>');
+    $('#list').css('border', '1px solid #8dc3f5');
 }
 
 </script>
