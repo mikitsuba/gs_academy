@@ -1,23 +1,14 @@
-body{
-    margin:0;
-    padding:0;
-    text-align:left;
-    font-size: 32px;
-    width:100%;
+html {
+    background: url(../img/cork_board.jpg);
 }
+
 header{
-    background-color: #fff;
-    border-bottom: 1px solid #ccc;
+    font-size: 32px;
+    border-bottom: 4px solid #ccc;
     text-align: center;
-}
-h1{
-    font-size: 100%;
-}
-main{
-    width:100%;
-    display: block;
-    border-bottom:1px solid #ccc;
-    position:relative;
+    color: white;
+    /* 文字の縁取り */
+    text-shadow:1px 0 5px black;
 }
 
 p{
@@ -85,10 +76,4 @@ td{
     font-size:16px;
     background-color:rgb(241, 239, 239);
     border-bottom: 1px solid #8dc3f5;
-}
-
-footer{
-    background-color: #fff;
-    border-bottom:1px solid #ccc;
-    text-align: center;
 }
