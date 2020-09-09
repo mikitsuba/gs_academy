@@ -40,6 +40,48 @@ $('#new_memo').on('click', function(e) {
 })
 
 
+// memoのドラッグアンドドロップ https://9cubed.info/article/jquery/0037
+let isMoving = false; //移動中かどうかのフラグ true:移動中 false:停止中
+let clickX, clickY;   //クリックされた位置
+let position;         //クリックされた時の要素の位置
+let moveMemo;         //クリックされた要素のid
+
+//mousedownイベント
+$(document).on("mousedown", '.memo_block', function(e) {
+    if (isMoving) {return}; //移動中の場合は処理しない
+
+    isMoving = true; //移動中にする
+
+    //クリックされた座標を保持します
+    clickX = e.screenX;
+    clickY = e.screenY;
+
+    //クリックされた時の要素の座標を保持します
+    position = $(this).position();
+    console.log(e);
+
+    //クリックされた要素のidを保持します
+    moveMemo = $(this).attr('id');
+    console.log(moveMemo);
+});
+
+//mousemoveイベント
+$(document).on("mousemove", 'main', function(e) {
+    if (!isMoving) return; //移動中でない場合は処理しない
+
+    //クリックされた時の要素の座標に、移動量を加算したものを、座標として設定します
+    $('#' + moveMemo).css("left", (position.left + e.screenX - clickX) + "px");
+    $('#' + moveMemo).css("top" , (position.top  + e.screenY - clickY) + "px");
+});
+
+//mouseupイベント
+$(document).on("mouseup",'.memo_block', function(e) {
+    if (!isMoving) return; //移動中でない場合は処理しない
+
+    isMoving = false; //停止中にする
+});
+
+
 // localStorageへの保存
 $(document).on('change', '.memo_block', function(e) {
     const memoId = $(this).attr('id');
@@ -85,7 +127,6 @@ function memo_delete() {
 }
 
 // TODO:
-// - ドラッグ＆ドロップで移動できるようにする
 // - サイズを自由に調整できる
 // - 付箋の色を選択できる
 // - カテゴリを設定できる
