@@ -23,6 +23,11 @@ $(window).on('contextmenu', function(e) {
 $(window).on('click', function(e) {
     $('#contextmenu').css('display', 'none');
 });
+// メモ上で右クリック時には、当該メモのidを取得する
+let selectedMemo = '';        //クリックされた要素のid
+$('.memo_block').on('contextmenu', function() {
+    selectedMemo = $(this).attr('id');
+});
 
 
 // メモの新規作成
@@ -37,18 +42,55 @@ $('#new_memo').on('click', function(e) {
     $('#memo' + newMemoId).css('top', y);
 
     newMemoId++;
+    localStorage.setItem('newMemoId', newMemoId);
 })
+
+
+// メモの削除
+$('#delete_memo').on('click', function() {
+    $('#' + selectedMemo).remove();
+    localStorage.removeItem(selectedMemo);
+});
+
+
+// メモの複製
+$('#duplicate_memo').on('click', function() {
+    const duplicateTitle = $('#' + selectedMemo + ' > .memo_block_title').val();
+    const duplicateContents = $('#' + selectedMemo + ' > .memo_block_contents').val();
+    const duplicatePosition = $('#' + selectedMemo + ' > .memo_block_title').offset();
+    console.log(duplicatePosition.left + 30);
+
+    $('main').append('<div class="memo_block" id="memo' + newMemoId + '"><textarea class="memo_block_title" placeholder="Title...">' + duplicateTitle + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + duplicateContents + '</textarea></div>');
+    $('#memo' + newMemoId).css('left', (duplicatePosition.left + 30) + 'px');
+    $('#memo' + newMemoId).css('top', (duplicatePosition.top + 30) + 'px');
+
+    const memoId = 'memo' + newMemoId;
+    const duplicateMemoData = {
+        'memoId': memoId,
+        'positionX': duplicatePosition.left + 30,
+        'positionY': duplicatePosition.top + 30,
+        'title': duplicateTitle,
+        'contents': duplicateContents
+    }
+
+    console.log(duplicateMemoData);
+
+    // 1つのkeyに複数のデータを保存するためには、文字列に変換する必要がある https://www.tam-tam.co.jp/tipsnote/javascript/post5978.html
+    localStorage.setItem(memoId, JSON.stringify(duplicateMemoData));
+
+    newMemoId++;
+    localStorage.setItem('newMemoId', newMemoId);
+});
 
 
 // memoのドラッグアンドドロップ https://9cubed.info/article/jquery/0037
 let isMoving = false; //移動中かどうかのフラグ true:移動中 false:停止中
 let clickX, clickY;   //クリックされた位置
 let position;         //クリックされた時の要素の位置
-let moveMemo;         //クリックされた要素のid
 
 //mousedownイベント
 $(document).on("mousedown", '.memo_block', function(e) {
-    if (isMoving) {return}; //移動中の場合は処理しない
+    if (isMoving) return; //移動中の場合は処理しない
 
     isMoving = true; //移動中にする
 
@@ -58,11 +100,9 @@ $(document).on("mousedown", '.memo_block', function(e) {
 
     //クリックされた時の要素の座標を保持します
     position = $(this).position();
-    console.log(e);
 
     //クリックされた要素のidを保持します
-    moveMemo = $(this).attr('id');
-    console.log(moveMemo);
+    selectedMemo = $(this).attr('id');
 });
 
 //mousemoveイベント
@@ -70,8 +110,8 @@ $(document).on("mousemove", 'main', function(e) {
     if (!isMoving) return; //移動中でない場合は処理しない
 
     //クリックされた時の要素の座標に、移動量を加算したものを、座標として設定します
-    $('#' + moveMemo).css("left", (position.left + e.screenX - clickX) + "px");
-    $('#' + moveMemo).css("top" , (position.top  + e.screenY - clickY) + "px");
+    $('#' + selectedMemo).css("left", (position.left + e.screenX - clickX) + "px");
+    $('#' + selectedMemo).css("top" , (position.top  + e.screenY - clickY) + "px");
 });
 
 //mouseupイベント
@@ -83,10 +123,12 @@ $(document).on("mouseup",'.memo_block', function(e) {
 
 
 // localStorageへの保存
+// 内容の変更
 $(document).on('change', '.memo_block', function(e) {
     const memoId = $(this).attr('id');
 
     const memoData = {
+        'memoId': memoId,
         'positionX': e.currentTarget.offsetLeft,
         'positionY': e.currentTarget.offsetTop,
         'title': e.currentTarget.firstChild.value,
@@ -96,22 +138,26 @@ $(document).on('change', '.memo_block', function(e) {
     // 1つのkeyに複数のデータを保存するためには、文字列に変換する必要がある https://www.tam-tam.co.jp/tipsnote/javascript/post5978.html
     localStorage.setItem(memoId, JSON.stringify(memoData));
 })
+// 位置の変更
 
 
 // リロードしたときの再表示
 for (let i = 0; i < localStorage.length; i++) {
-    const savedMemo = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    if (localStorage.key(i).startsWith('memo')) {
+        const memoId = localStorage.key(i)
+        const savedMemo = JSON.parse(localStorage.getItem(memoId));
 
-    const positionX = savedMemo['positionX'];
-    const positionY = savedMemo['positionY'];
-    const title = savedMemo['title'];
-    const contents = savedMemo['contents'];
+        const positionX = savedMemo['positionX'];
+        const positionY = savedMemo['positionY'];
+        const title = savedMemo['title'];
+        const contents = savedMemo['contents'];
 
-    $('main').append('<div class="memo_block" id="memo' + newMemoId + '"><textarea class="memo_block_title" placeholder="Title...">' + title + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + contents + '</textarea></div>')
-    $('#memo' + newMemoId).css('left', positionX);
-    $('#memo' + newMemoId).css('top', positionY);
+        $('main').append('<div class="memo_block" id="' + memoId + '"><textarea class="memo_block_title" placeholder="Title...">' + title + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + contents + '</textarea></div>')
+        $('#' + memoId).css('left', positionX);
+        $('#' + memoId).css('top', positionY);
+    }
 
-    newMemoId++;
+    newMemoId = localStorage.getItem('newMemoId');
 }
 
 function memo_copy() {
@@ -127,12 +173,11 @@ function memo_delete() {
 }
 
 // TODO:
+// - 移動したときにlocalstorageが更新されるように
+// - 右クリック時は、ドラッグアンドドロップが作動しないようにする
 // - サイズを自由に調整できる
 // - 付箋の色を選択できる
 // - カテゴリを設定できる
-// - copy機能を作る
-// - paste機能を作る
-// - 削除機能を作る
 // - 重なっているやつは、クリックしたやつを上にもってくる
 
 // 【nice to havs】

@@ -15,13 +15,13 @@ header{
 }
 
 /* -----------
-memo_block 
+memo_block
 ----------- */
 /* 紙を折ったようなCSSはここを参照（https://coliss.com/articles/build-websites/operation/css/css-tutorial-folded-corner-effect.html） */
 .memo_block {
     display: flex;
     flex-direction: column;
-    position: fixed;
+    position: absolute;
     width: 240px;
     height: 240px;
     padding: 5px 10px;
