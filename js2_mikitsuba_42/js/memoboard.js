@@ -2,7 +2,7 @@
 $(document).ready(function () {
     hsize = $(window).height();
     $("body").css("height", hsize + "px");
-  });
+});
 
 $(window).resize(function () {
 hsize = $(window).height();
@@ -18,32 +18,59 @@ $(window).on('contextmenu', function(e) {
     $('#contextmenu').css('left', x);
     $('#contextmenu').css('top', y);
     $('#contextmenu').css('display', 'block');
+
+    // 右クリック時は、ドラッグアンドドロップでの移動を止める
+    isMoving = false;
 });
 // 左クリック時に、メニューを非表示に
 $(window).on('click', function(e) {
     $('#contextmenu').css('display', 'none');
 });
 // メモ上で右クリック時には、当該メモのidを取得する
-let selectedMemo = '';        //クリックされた要素のid
+let selectedMemo = '';  //クリックされた要素のid
 $('.memo_block').on('contextmenu', function() {
     selectedMemo = $(this).attr('id');
 });
 
 
 // メモの新規作成
+function createMemo(memoId, positionX, positionY, color, title, contents) {
+    $('main').append('<div class="memo_block" id="' + memoId + '"><textarea class="memo_block_title" placeholder="Title...">' + title + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + contents + '</textarea></div>');
+    $('#' + memoId).css('left', positionX);
+    $('#' + memoId).css('top', positionY);
+    $('#' + memoId).css('background', color);
+}
+
 let newMemoId = 0;
 $('#new_memo').on('click', function(e) {
-    $('main').append('<div class="memo_block" id="memo' + newMemoId + '"><textarea class="memo_block_title" placeholder="Title..."></textarea><textarea class="memo_block_contents" placeholder="Contents..."></textarea></div>')
+    const memoId = 'memo' + newMemoId
+    const positionX = e.pageX;
+    const positionY = e.pageY;
+    const color = 'rgb(255, 251, 179)';
+    createMemo(memoId, positionX, positionY, color, '', '');
 
-    const x = e.pageX;
-    const y = e.pageY;
-
-    $('#memo' + newMemoId).css('left', x);
-    $('#memo' + newMemoId).css('top', y);
+    storeMemo(memoId, positionX, positionY, color, '', '');
 
     newMemoId++;
+    // リロードされた後に新規メモが作成された際にもidがかぶらないようにするため、newMemoIdもlocalstorageに格納する
     localStorage.setItem('newMemoId', newMemoId);
 })
+
+
+// メモ内容のlocalstorage保存
+function storeMemo(memoId, positionX, positionY, color, title, contents) {
+    const memoData = {
+        'memoId': memoId,
+        'positionX': positionX,
+        'positionY': positionY,
+        'color': color,
+        'title': title,
+        'contents': contents
+    }
+
+    // 1つのkeyに複数のデータを保存するためには、文字列に変換する必要がある https://www.tam-tam.co.jp/tipsnote/javascript/post5978.html
+    localStorage.setItem(memoId, JSON.stringify(memoData));
+}
 
 
 // メモの削除
@@ -55,31 +82,40 @@ $('#delete_memo').on('click', function() {
 
 // メモの複製
 $('#duplicate_memo').on('click', function() {
+    const duplicateMemoId = 'memo' + newMemoId;
+    const duplicatePosition = $('#' + selectedMemo).offset();
+    const duplicateColor = $('#' + selectedMemo).css('background');
     const duplicateTitle = $('#' + selectedMemo + ' > .memo_block_title').val();
     const duplicateContents = $('#' + selectedMemo + ' > .memo_block_contents').val();
-    const duplicatePosition = $('#' + selectedMemo + ' > .memo_block_title').offset();
-    console.log(duplicatePosition.left + 30);
 
-    $('main').append('<div class="memo_block" id="memo' + newMemoId + '"><textarea class="memo_block_title" placeholder="Title...">' + duplicateTitle + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + duplicateContents + '</textarea></div>');
-    $('#memo' + newMemoId).css('left', (duplicatePosition.left + 30) + 'px');
-    $('#memo' + newMemoId).css('top', (duplicatePosition.top + 30) + 'px');
+    createMemo(duplicateMemoId, (duplicatePosition.left + 30), (duplicatePosition.top + 30), duplicateColor, duplicateTitle, duplicateContents);
 
-    const memoId = 'memo' + newMemoId;
-    const duplicateMemoData = {
-        'memoId': memoId,
-        'positionX': duplicatePosition.left + 30,
-        'positionY': duplicatePosition.top + 30,
-        'title': duplicateTitle,
-        'contents': duplicateContents
-    }
-
-    console.log(duplicateMemoData);
-
-    // 1つのkeyに複数のデータを保存するためには、文字列に変換する必要がある https://www.tam-tam.co.jp/tipsnote/javascript/post5978.html
-    localStorage.setItem(memoId, JSON.stringify(duplicateMemoData));
+    storeMemo(duplicateMemoId, (duplicatePosition.left + 30), (duplicatePosition.top + 30), duplicateColor, duplicateTitle, duplicateContents);
 
     newMemoId++;
     localStorage.setItem('newMemoId', newMemoId);
+});
+
+
+// メモの色変更
+function colorChange(red, green, blue) {
+    $('#' + selectedMemo).css('background', 'rgb(' + red +  ', ' + green + ', ' + blue + ')');
+    const memoId = selectedMemo;
+    const position = $('#' + selectedMemo).offset();
+    const newColor = 'rgb(' + red +  ', ' + green + ', ' + blue + ')';
+    const title = $('#' + selectedMemo + ' > .memo_block_title').val();
+    const contents = $('#' + selectedMemo + ' > .memo_block_contents').val();
+    storeMemo(memoId, position.left, position.top, newColor, title, contents);
+}
+
+$('#color_yellow').on('click', function() {
+    colorChange(255, 251, 179);
+});
+$('#color_green').on('click', function() {
+    colorChange(83, 163, 180);
+});
+$('#color_pink').on('click', function() {
+    colorChange(255, 179, 221);
 });
 
 
@@ -117,64 +153,40 @@ $(document).on("mousemove", 'main', function(e) {
 //mouseupイベント
 $(document).on("mouseup",'.memo_block', function(e) {
     if (!isMoving) return; //移動中でない場合は処理しない
-
     isMoving = false; //停止中にする
+
+    const memoId = $(this).attr('id');
+    storeMemo(memoId, e.currentTarget.offsetLeft, e.currentTarget.offsetTop, e.currentTarget.style.background, e.currentTarget.firstChild.value, e.currentTarget.lastChild.value);
 });
 
 
-// localStorageへの保存
-// 内容の変更
+// 内容の変更のlocalStorageへの保存
 $(document).on('change', '.memo_block', function(e) {
     const memoId = $(this).attr('id');
-
-    const memoData = {
-        'memoId': memoId,
-        'positionX': e.currentTarget.offsetLeft,
-        'positionY': e.currentTarget.offsetTop,
-        'title': e.currentTarget.firstChild.value,
-        'contents': e.currentTarget.lastChild.value
-    }
-
-    // 1つのkeyに複数のデータを保存するためには、文字列に変換する必要がある https://www.tam-tam.co.jp/tipsnote/javascript/post5978.html
-    localStorage.setItem(memoId, JSON.stringify(memoData));
+    console.log(e);
+    storeMemo(memoId, e.currentTarget.offsetLeft, e.currentTarget.offsetTop, e.currentTarget.style.background, e.currentTarget.firstChild.value, e.currentTarget.lastChild.value);
 })
-// 位置の変更
 
 
 // リロードしたときの再表示
 for (let i = 0; i < localStorage.length; i++) {
     if (localStorage.key(i).startsWith('memo')) {
-        const memoId = localStorage.key(i)
-        const savedMemo = JSON.parse(localStorage.getItem(memoId));
+        const savedMemoId = localStorage.key(i)
+        const savedMemo = JSON.parse(localStorage.getItem(savedMemoId));
 
-        const positionX = savedMemo['positionX'];
-        const positionY = savedMemo['positionY'];
-        const title = savedMemo['title'];
-        const contents = savedMemo['contents'];
+        const savedPositionX = savedMemo['positionX'];
+        const savedPositionY = savedMemo['positionY'];
+        const savedColor = savedMemo['color'];
+        const savedTitle = savedMemo['title'];
+        const savedContents = savedMemo['contents'];
 
-        $('main').append('<div class="memo_block" id="' + memoId + '"><textarea class="memo_block_title" placeholder="Title...">' + title + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + contents + '</textarea></div>')
-        $('#' + memoId).css('left', positionX);
-        $('#' + memoId).css('top', positionY);
+        createMemo(savedMemoId, savedPositionX, savedPositionY, savedColor, savedTitle, savedContents);
     }
 
     newMemoId = localStorage.getItem('newMemoId');
 }
 
-function memo_copy() {
-
-}
-
-function memo_paste() {
-
-}
-
-function memo_delete() {
-
-}
-
 // TODO:
-// - 移動したときにlocalstorageが更新されるように
-// - 右クリック時は、ドラッグアンドドロップが作動しないようにする
 // - サイズを自由に調整できる
 // - 付箋の色を選択できる
 // - カテゴリを設定できる
