@@ -49,8 +49,8 @@ $('#new_memo').on('click', function(e) {
     const positionX = e.pageX;
     const positionY = e.pageY;
     const color = 'rgb(255, 251, 179)';
-    const width = '200px';
-    const height = '200px';
+    const width = '250px';
+    const height = '250px';
     createMemo(memoId, positionX, positionY, color, width, height, '', '');
 
     storeMemo(memoId, positionX, positionY, color, width, height, '', '');
@@ -144,13 +144,13 @@ function sizeChange(width, height) {
     storeMemo(memoId, position.left, position.top, color, newWidth, newHeight, title, contents);
 }
 $('#size_small').on('click', function() {
-    sizeChange('150px', '150px');
-});
-$('#size_medium').on('click', function() {
     sizeChange('200px', '200px');
 });
-$('#size_large').on('click', function() {
+$('#size_medium').on('click', function() {
     sizeChange('250px', '250px');
+});
+$('#size_large').on('click', function() {
+    sizeChange('300px', '300px');
 });
 
 
