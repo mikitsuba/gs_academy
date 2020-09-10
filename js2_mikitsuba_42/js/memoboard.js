@@ -34,11 +34,13 @@ $('.memo_block').on('contextmenu', function() {
 
 
 // メモの新規作成
-function createMemo(memoId, positionX, positionY, color, title, contents) {
+function createMemo(memoId, positionX, positionY, color, width, height, title, contents) {
     $('main').append('<div class="memo_block" id="' + memoId + '"><textarea class="memo_block_title" placeholder="Title...">' + title + '</textarea><textarea class="memo_block_contents" placeholder="Contents...">' + contents + '</textarea></div>');
     $('#' + memoId).css('left', positionX);
     $('#' + memoId).css('top', positionY);
     $('#' + memoId).css('background', color);
+    $('#' + memoId).css('width', width);
+    $('#' + memoId).css('height', height);
 }
 
 let newMemoId = 0;
@@ -47,9 +49,11 @@ $('#new_memo').on('click', function(e) {
     const positionX = e.pageX;
     const positionY = e.pageY;
     const color = 'rgb(255, 251, 179)';
-    createMemo(memoId, positionX, positionY, color, '', '');
+    const width = '200px';
+    const height = '200px';
+    createMemo(memoId, positionX, positionY, color, width, height, '', '');
 
-    storeMemo(memoId, positionX, positionY, color, '', '');
+    storeMemo(memoId, positionX, positionY, color, width, height, '', '');
 
     newMemoId++;
     // リロードされた後に新規メモが作成された際にもidがかぶらないようにするため、newMemoIdもlocalstorageに格納する
@@ -58,12 +62,14 @@ $('#new_memo').on('click', function(e) {
 
 
 // メモ内容のlocalstorage保存
-function storeMemo(memoId, positionX, positionY, color, title, contents) {
+function storeMemo(memoId, positionX, positionY, color, width, height, title, contents) {
     const memoData = {
         'memoId': memoId,
         'positionX': positionX,
         'positionY': positionY,
         'color': color,
+        'width': width,
+        'height': height,
         'title': title,
         'contents': contents
     }
@@ -84,13 +90,16 @@ $('#delete_memo').on('click', function() {
 $('#duplicate_memo').on('click', function() {
     const duplicateMemoId = 'memo' + newMemoId;
     const duplicatePosition = $('#' + selectedMemo).offset();
-    const duplicateColor = $('#' + selectedMemo).css('background');
+    const duplicateColor = $('#' + selectedMemo).css('background-color');
+    const duplicateWidth = $('#' + selectedMemo).css('width');
+    const duplicateHeight = $('#' + selectedMemo).css('height');
     const duplicateTitle = $('#' + selectedMemo + ' > .memo_block_title').val();
     const duplicateContents = $('#' + selectedMemo + ' > .memo_block_contents').val();
+    console.log(duplicateHeight);
 
-    createMemo(duplicateMemoId, (duplicatePosition.left + 30), (duplicatePosition.top + 30), duplicateColor, duplicateTitle, duplicateContents);
+    createMemo(duplicateMemoId, (duplicatePosition.left + 30), (duplicatePosition.top + 30), duplicateColor, duplicateWidth, duplicateHeight, duplicateTitle, duplicateContents);
 
-    storeMemo(duplicateMemoId, (duplicatePosition.left + 30), (duplicatePosition.top + 30), duplicateColor, duplicateTitle, duplicateContents);
+    storeMemo(duplicateMemoId, (duplicatePosition.left + 30), (duplicatePosition.top + 30), duplicateColor, duplicateWidth, duplicateHeight, duplicateTitle, duplicateContents);
 
     newMemoId++;
     localStorage.setItem('newMemoId', newMemoId);
@@ -103,11 +112,12 @@ function colorChange(red, green, blue) {
     const memoId = selectedMemo;
     const position = $('#' + selectedMemo).offset();
     const newColor = 'rgb(' + red +  ', ' + green + ', ' + blue + ')';
+    const width = $('#' + selectedMemo).css('width');
+    const height = $('#' + selectedMemo).css('height');
     const title = $('#' + selectedMemo + ' > .memo_block_title').val();
     const contents = $('#' + selectedMemo + ' > .memo_block_contents').val();
-    storeMemo(memoId, position.left, position.top, newColor, title, contents);
+    storeMemo(memoId, position.left, position.top, newColor, width, height, title, contents);
 }
-
 $('#color_yellow').on('click', function() {
     colorChange(255, 251, 179);
 });
@@ -116,6 +126,31 @@ $('#color_green').on('click', function() {
 });
 $('#color_pink').on('click', function() {
     colorChange(255, 179, 221);
+});
+
+
+// メモのサイズ変更
+function sizeChange(width, height) {
+    $('#' + selectedMemo).css('width', width);
+    $('#' + selectedMemo).css('height', height);
+
+    const memoId = selectedMemo;
+    const position = $('#' + selectedMemo).offset();
+    const color = $('#' + selectedMemo).css('background-color');
+    const newWidth = width;
+    const newHeight = height;
+    const title = $('#' + selectedMemo + ' > .memo_block_title').val();
+    const contents = $('#' + selectedMemo + ' > .memo_block_contents').val();
+    storeMemo(memoId, position.left, position.top, color, newWidth, newHeight, title, contents);
+}
+$('#size_small').on('click', function() {
+    sizeChange('150px', '150px');
+});
+$('#size_medium').on('click', function() {
+    sizeChange('200px', '200px');
+});
+$('#size_large').on('click', function() {
+    sizeChange('250px', '250px');
 });
 
 
@@ -156,7 +191,7 @@ $(document).on("mouseup",'.memo_block', function(e) {
     isMoving = false; //停止中にする
 
     const memoId = $(this).attr('id');
-    storeMemo(memoId, e.currentTarget.offsetLeft, e.currentTarget.offsetTop, e.currentTarget.style.background, e.currentTarget.firstChild.value, e.currentTarget.lastChild.value);
+    storeMemo(memoId, e.currentTarget.offsetLeft, e.currentTarget.offsetTop, e.currentTarget.style.background, e.currentTarget.style.width, e.currentTarget.style.height, e.currentTarget.firstChild.value, e.currentTarget.lastChild.value);
 });
 
 
@@ -164,7 +199,7 @@ $(document).on("mouseup",'.memo_block', function(e) {
 $(document).on('change', '.memo_block', function(e) {
     const memoId = $(this).attr('id');
     console.log(e);
-    storeMemo(memoId, e.currentTarget.offsetLeft, e.currentTarget.offsetTop, e.currentTarget.style.background, e.currentTarget.firstChild.value, e.currentTarget.lastChild.value);
+    storeMemo(memoId, e.currentTarget.offsetLeft, e.currentTarget.offsetTop, e.currentTarget.style.background, e.currentTarget.style.width, e.currentTarget.style.height, e.currentTarget.firstChild.value, e.currentTarget.lastChild.value);
 })
 
 
@@ -177,23 +212,21 @@ for (let i = 0; i < localStorage.length; i++) {
         const savedPositionX = savedMemo['positionX'];
         const savedPositionY = savedMemo['positionY'];
         const savedColor = savedMemo['color'];
+        const savedWidth = savedMemo['width'];
+        const savedHeight = savedMemo['height'];
         const savedTitle = savedMemo['title'];
         const savedContents = savedMemo['contents'];
 
-        createMemo(savedMemoId, savedPositionX, savedPositionY, savedColor, savedTitle, savedContents);
+        createMemo(savedMemoId, savedPositionX, savedPositionY, savedColor, savedWidth, savedHeight, savedTitle, savedContents);
     }
 
     newMemoId = localStorage.getItem('newMemoId');
 }
 
 // TODO:
-// - サイズを自由に調整できる
-// - 付箋の色を選択できる
-// - カテゴリを設定できる
 // - 重なっているやつは、クリックしたやつを上にもってくる
 
-// 【nice to havs】
-// - 可能なら、タイトルはoptionalにする
+// NiceToHave:
 // - 優先度によるサイズ分け（これは色で分けてもいいかもしれない）
 // - メニューバーつけて、カテゴライズ
 // - 期限を定めたときのアラーム機能
