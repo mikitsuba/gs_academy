@@ -195,6 +195,15 @@ $(document).on("mouseup",'.memo_block', function(e) {
 });
 
 
+// activeなメモを前面に持ってくる
+$(document).on('focus', '.memo_block', function() {
+    $(this).css('z-index', '10');
+});
+$(document).on('blur', '.memo_block', function() {
+    $(this).css('z-index', '');
+});
+
+
 // 内容の変更のlocalStorageへの保存
 $(document).on('change', '.memo_block', function(e) {
     const memoId = $(this).attr('id');
@@ -223,10 +232,8 @@ for (let i = 0; i < localStorage.length; i++) {
     newMemoId = localStorage.getItem('newMemoId');
 }
 
-// TODO:
-// - 重なっているやつは、クリックしたやつを上にもってくる
-
 // NiceToHave:
+// - 検索バーをつける
 // - 優先度によるサイズ分け（これは色で分けてもいいかもしれない）
 // - メニューバーつけて、カテゴライズ
 // - 期限を定めたときのアラーム機能
