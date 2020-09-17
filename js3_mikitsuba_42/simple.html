@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+<div class="wrapper">
+    <div id="output"></div>
+    <div class="icon_container">
+        <p>Choose your icon</p>
+        <ul class="icons">
+            <li class="imgs" data-img="0"><img src="imgs/buke.png" alt="icon-picture" id="icon0"></li>
+            <li class="imgs" data-img="1"><img src="imgs/tuku.jpg" alt="icon-picture" id="icon1"></li>
+            <li class="imgs" data-img="2"><img src="imgs/caram.png" alt="icon-picture" id="icon2"></li>
+        </ul>
+    </div>
+    <div class="message_container">
+        <input type="text" id="user_name" placeholder="Type your name">
+        <textarea id="text" cols="30" rows="5" placeholder="Hit Enter key to send"></textarea>
+    </div>
+
+</div>
+<!--/ コンテンツ表示画面 -->
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- JQuery -->
+
+<!--** 以下Firebase **-->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase.js"></script>
+
+<script src="js/chat.js" charset="utf-8"></script>
+
+</body>
+</html>
