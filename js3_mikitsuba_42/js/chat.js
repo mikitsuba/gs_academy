@@ -1,6 +1,15 @@
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
+var firebaseConfig = {
+  apiKey: "AIzaSyBC7gb5nNdSsLLErrP10uexkDvr9hPGC3g",
+  authDomain: "gsdemo-f5ef1.firebaseapp.com",
+  databaseURL: "https://gsdemo-f5ef1.firebaseio.com",
+  projectId: "gsdemo-f5ef1",
+  storageBucket: "gsdemo-f5ef1.appspot.com",
+  messagingSenderId: "414047046002",
+  appId: "1:414047046002:web:716697c289d776c0b335eb",
+  measurementId: "G-W7WQH30CCF"
+};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -55,11 +64,9 @@ function send() {
     const hour = ('0' + now.getHours()).slice(-2);
     const minute = ('0' + now.getMinutes()).slice(-2);
     const current_time = `${month}/${date}  ${hour}:${minute}`
-    //IPアドレス
-    let ip = '';
+    //IPアドレス https://www.sejuku.net/blog/104627
     $.get("https://ipinfo.io", function(response) {
-      ip = response.ip;
-
+      const ip = response.ip;
       // これを外に出したら、ipアドレスが代入されなかった。おそらく、callbackまで一定の時間がかかり、その前に下のコードが実行されてしまうため
       const msg ={
         user_name: user_name,
@@ -81,11 +88,10 @@ ref.on('child_added', function(data) {
     console.log(key);
     $('#output').append(message);
     $('#output').scrollTop($('#output')[0].scrollHeight);
-    let ip;
-    
+
     // IPアドレスにより「自分」を識別子し、自分からのメッセージのみ右に寄せた
     $.get("https://ipinfo.io", function(response) {
-      ip = response.ip;
+      const ip = response.ip;
       if (ip == val.ip) {
         $('#' + key).css('justify-content', 'flex-end');
       }
