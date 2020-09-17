@@ -31,6 +31,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- JQuery -->
 
+<!-- outputの高さの調整 -->
+<script>
+    $(document).ready(function () {
+        const hsize = $(window).height() -239;
+        $("#output").css("height", hsize + "px");
+    });
+
+    $(window).resize(function () {
+        const hsize = $(window).height() -239;
+        $("#output").css("height", hsize + "px");
+    });
+</script>
+
 <!--** 以下Firebase **-->
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase.js"></script>
