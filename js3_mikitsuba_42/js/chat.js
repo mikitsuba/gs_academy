@@ -46,9 +46,11 @@ const ref = firebase.database().ref(); // .ref()は、ブラウザから投稿�
 function send() {
     // 名前
     const user_name = $('#user_name').val();
-
     // テキスト
-    const text = $('#text').val();
+    let text = String($('#text').val());
+    console.log(text);
+    // <br>に変換 https://akinov.hatenablog.com/entry/2014/09/16/235554
+    text = text.replace(/(\n|\r)/g, '<br>');
     //日時
     const now = new Date();
     const month = now.getMonth() + 1;
@@ -72,7 +74,7 @@ function send() {
 ref.on('child_added', function(data) {
     const val = data.val(); // 送信されたオブジェクトを取得
     const key = data.key; // ユニークキーの取得
-    const message = '<div class="message_wrap" id="' + key + '"><img src="imgs/' + imgs[val.icon] + '" width="30"><div class="chat_wrap"><p class="chat_wrap_user_name">' + val.user_name + '&nbsp;' + val.posted_time + '</p><p>' + val.text + '</p></div></div>'
+    const message = '<div class="message_wrap" id="' + key + '"><img src="imgs/' + imgs[val.icon] + '" width="30"　" height="30"><div class="chat_wrap"><p class="chat_wrap_user_name">' + val.user_name + '&nbsp;' + val.posted_time + '</p><p>' + val.text + '</p></div></div>'
     // '<p>' + val.user_name + '&nbsp;&nbsp;&nbsp;' +val.posted_time + '<br>' + val.text + '</p>'
 
     $('#output').append(message);

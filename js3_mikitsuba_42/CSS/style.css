@@ -11,6 +11,13 @@
     border: solid 4px gray;
 }
 
+.chat_wrap {
+    padding: 5px;
+    margin-left: 5px;
+    border: solid 2px lightgrey;
+    border-radius: 10px;
+}
+
 .message_wrap {
     display: flex;
     margin-bottom: 5px;

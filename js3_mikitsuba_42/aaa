@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+</head>
+<body>
+<!-- コンテンツ表示画面 -->
+<!--/ コンテンツ表示画面 -->
+    <div>名前：<input type="text" id="uname"></div>
+    <div>
+        <textarea id="text" cols="30" rows="10"></textarea>
+        <button id="send">送信</button>
+    </div>
+    <div id="output" style="height: 300px;overflow:auto;border:1px solid red;"></div>
+</div>
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- JQuery -->
+<!--** 以下Firebase **-->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBMVZjbItSd-NbOqSeTvsrepCkOS1YwdFg",
+    authDomain: "dev17-3f41b.firebaseapp.com",
+    databaseURL: "https://dev17-3f41b.firebaseio.com",
+    projectId: "dev17-3f41b",
+    storageBucket: "dev17-3f41b.appspot.com",
+    messagingSenderId: "235027277499",
+    appId: "1:235027277499:web:82fd3ac88cf91e5079eb9e"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const ref = firebase.database().ref();
+function send(){
+           var now = new Date();
+          var year = now.getFullYear();
+          var mon = now.getMonth()+1;
+          var day = now.getDate();
+          var hour = now.getHours();
+          var min = now.getMinutes();
+          var sec = now.getSeconds();
+          var t = year + mon+day+hour+min+sec
+          const time = $("#view_time").val();
+          const times = t
+}
+  //文字送信
+  $("#send").on("click",function(){
+      const uname = $("#uname").val();
+      const text = $("#text").val();
+      const now = $("#now").val();
+            uname: uname,
+            text: text,
+            now:t
+  }
+  ref.push(msg);
+  });
+//受信処理
+ref.on("child_added",function(data){
+       const v = data.val();//送信されたオブジェクトを取得
+       const k = data.key;//ユニークキーの取得
+       const h = '<p>'+v.uname+'<br>'+.now+'<br>'+v.text+'</p>';
+       $("#output").append(h);
+});
+//イベント情報取得
+$("#text").on("keydown",function(e){
+ console.log(e);
+ if(e.keyCode == 13) {
+  const uname = $("#uname").val();
+  const now = $("#now").val();
+  const text = $("#text").val();
+  const msg  = {
+            uname: uname,
+            now:now,
+            text: text
+  }
+  ref.push(msg);//set=決まった名前、push=ユニーク
+ }
+ });
+ //bodyをクリニックっしてどこがclickした顔w取得がかのう
+$("body").on("click",function(e){
+  console.log(e);
+});
+</script>
+</body>
+</html>
