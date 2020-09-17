@@ -11,10 +11,8 @@
 }
 
 .chat_wrap {
-    padding: 5px;
     margin-left: 5px;
-    border: solid 2px lightgrey;
-    border-radius: 10px;
+    
 }
 
 .message_wrap {
@@ -24,6 +22,13 @@
 
 .chat_wrap_user_name {
     font-size: 10px;
+}
+
+.chat_wrap_contents {
+    display: inline-block;
+    padding: 5px;
+    border: solid 2px lightgrey;
+    border-radius: 10px;
 }
 
 .icon_container > p {

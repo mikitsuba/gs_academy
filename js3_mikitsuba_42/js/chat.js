@@ -86,18 +86,17 @@ function send() {
 ref.on('child_added', function(data) {
     const val = data.val(); // 送信されたオブジェクトを取得
     const key = data.key; // ユニークキーの取得
-    const message = '<div class="message_wrap" id="' + key + '"><img src="imgs/' + imgs[val.icon] + '" width="30"　" height="30"><div class="chat_wrap"><p class="chat_wrap_user_name">' + val.user_name + '&nbsp;' + val.posted_time + '</p><p>' + val.text + '</p></div></div>';
+    const message = '<div class="message_wrap" id="' + key + '"><img src="imgs/' + imgs[val.icon] + '" width="30"　" height="30"><div class="chat_wrap"><p class="chat_wrap_user_name">' + val.user_name + '&nbsp;' + val.posted_time + '</p><p class="chat_wrap_contents">' + val.text + '</p></div></div>';
+    console.log(key);
+    $('#output').append(message);
+    $('#output').scrollTop($('#output')[0].scrollHeight);
     let ip;
-    // 1つ1つのデータ読み込みに時間がかかって、順番がunstableになってしまった
+    
+    // IPアドレスにより「自分」を識別子し、自分からのメッセージのみ右に寄せた
     $.get("https://ipinfo.io", function(response) {
       ip = response.ip;
       if (ip == val.ip) {
-        $('#output').append(message);
         $('#' + key).css('justify-content', 'flex-end');
-        $('#output').scrollTop($('#output')[0].scrollHeight);
-      } else {
-        $('#output').append(message);
-        $('#output').scrollTop($('#output')[0].scrollHeight);
       }
     }, "jsonp");
 });
