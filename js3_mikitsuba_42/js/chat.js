@@ -45,10 +45,15 @@ const ref = firebase.database().ref(); // .ref()は、ブラウザから投稿�
 // 関数定義
 function send() {
     // 名前
-    const user_name = $('#user_name').val();
+    let user_name = '';
+    if (String($('#user_name').val()) == '') {
+      user_name = 'Anonymus';
+    } else {
+      user_name = $('#user_name').val();
+    }
+
     // テキスト
     let text = String($('#text').val());
-    console.log(text);
     // <br>に変換 https://akinov.hatenablog.com/entry/2014/09/16/235554
     text = text.replace(/(\n|\r)/g, '<br>');
     //日時
@@ -58,27 +63,41 @@ function send() {
     // 1桁の数字について、ゼロ詰めする https://tagamidaiki.com/javascript-0-chink/
     const hour = ('0' + now.getHours()).slice(-2);
     const minute = ('0' + now.getMinutes()).slice(-2);
-
     const current_time = `${month}/${date}  ${hour}:${minute}`
+    //IPアドレス
+    let ip = '';
+    $.get("https://ipinfo.io", function(response) {
+      ip = response.ip;
 
-    const msg ={
+      // これを外に出したら、ipアドレスが代入されなかった。おそらく、callbackまで一定の時間がかかり、その前に下のコードが実行されてしまうため
+      const msg ={
         user_name: user_name,
         icon: icon_id,
         posted_time: current_time,
-        text: text //ここに時間を追加
-    };
-    ref.push(msg); // pushではなくsetにすると、決まったkeyにできる。pushは、ユニークキー
+        text: text,
+        ip: ip
+       };
+      ref.push(msg);
+    }, "jsonp");
 }
 
 // 受信処理
 ref.on('child_added', function(data) {
     const val = data.val(); // 送信されたオブジェクトを取得
     const key = data.key; // ユニークキーの取得
-    const message = '<div class="message_wrap" id="' + key + '"><img src="imgs/' + imgs[val.icon] + '" width="30"　" height="30"><div class="chat_wrap"><p class="chat_wrap_user_name">' + val.user_name + '&nbsp;' + val.posted_time + '</p><p>' + val.text + '</p></div></div>'
-    // '<p>' + val.user_name + '&nbsp;&nbsp;&nbsp;' +val.posted_time + '<br>' + val.text + '</p>'
-
-    $('#output').append(message);
-    $('#output').scrollTop($('#output')[0].scrollHeight);
+    const message = '<div class="message_wrap" id="' + key + '"><img src="imgs/' + imgs[val.icon] + '" width="30"　" height="30"><div class="chat_wrap"><p class="chat_wrap_user_name">' + val.user_name + '&nbsp;' + val.posted_time + '</p><p>' + val.text + '</p></div></div>';
+    let ip;
+    $.get("https://ipinfo.io", function(response) {
+      ip = response.ip;
+      if (ip == val.ip) {
+        $('#output').append(message);
+        $('#' + key).css('justify-content', 'flex-end');
+        $('#output').scrollTop($('#output')[0].scrollHeight);
+      } else {
+        $('#output').append(message);
+        $('#output').scrollTop($('#output')[0].scrollHeight);
+      }
+    }, "jsonp");
 });
 
 // イベント情報の取得
