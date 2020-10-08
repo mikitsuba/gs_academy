@@ -1,0 +1,74 @@
+/* map */
+#map {
+    position: relative;
+}
+
+/* search bar https://kagesai.net/search-form-design/ */
+#search_form{
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width:400px;
+    margin-bottom:20px;
+    margin-left: 20px;
+}
+
+#search_bar{
+    height:50px;
+    width: 100%;
+    padding:0 5px;
+    position:absolute;
+    left:0;
+    top:0;
+    border-radius:5px;
+    outline:0;
+    background:#eee;
+    font-size: 1rem;
+}
+
+#search_btn{
+    position:absolute;
+    right:0px;/*アイコン左右の位置調整*/
+    top:15px;
+    background:none;
+    color:#666;
+    border:none;
+    font-size:20px; /*アイコンサイズ*/
+    cursor: pointer;
+}
+
+#search_btn:hover{
+    color:#7fbfff;
+}
+
+/* search results */
+.search_results {
+    display: none;
+    position: absolute; /* z-indexを効かせるために必要 */
+    top: 5px;
+    left: 0;
+    width: 430px;
+    padding: 10px;
+    background-color:#ffffff;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+#close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background:none;
+    color:#666;
+    border:none;
+    font-size:20px;
+}
+
+.search_result {
+    margin: 10px 0;
+    border-top: solid 1px lightgrey;
+}
+
+.name {
+    font-size: 1.2rem;
+}

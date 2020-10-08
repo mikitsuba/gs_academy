@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>もくもくカフェ探し</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" >
+</head>
+<body>
+    <div id="map" style="width: 0; height: 0;"></div>
+    <div class="search">
+        <!-- 後で形式を変える。formだと非同期通信がうまく使えないかも -->
+        <div id="search_form">
+            <input id="search_bar"  type="text" placeholder="何も入力しないと現在地で検索されます"/>
+            <i class="fas fa-search" id="search_btn"></i>
+        </div>
+        <!-- 車とか徒歩のアイコン入れる -->
+    </div>
+    <div class="search_results">
+        <p class="logo_in_result">もくもくカフェ探し</p>
+        <i class="fas fa-times" id="close_btn"></i>
+        <div class="search_result" id="">
+            <a href="" class="name">name</a>
+            <span class="distance">distance</span>
+            <span class="duratin">duration</span>
+            <p class="opentime">opentime</p>
+            <p class="address">address</p>
+        </div>
+        <div class="search_result" id="">
+            <a href="" class="name">name</a>
+            <span class="distance">distance</span>
+            <span class="duratin">duration</span>
+            <p class="opentime">opentime</p>
+            <p class="address">address</p>
+        </div>
+    </div>
+
+<!-- JQuery -->
+<script src="js/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script src="js/main.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpyWUWCL2aCitB2rz7G7ti1ixnuRuEUT4&callback=initMap" async defer></script>
+
+</body>
+</html>
+
