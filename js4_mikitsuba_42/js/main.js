@@ -126,11 +126,15 @@ function putResultMarker(latlng, num) {
             fontSize: '20px'                     //文字のサイズ
         }
     });
+
+    google.maps.event.addListener(resultMarker, 'click', function(event) {
+        $('.search_results').css('display', 'block');
+    });
 }
 
 
 // 経度・緯度情報に基づいて、電源・wifiのあるカフェを検索する
-let cafes = {};
+let cafes = [];
 function searchCafe(lat, lng, distance) {
     const params = {
         keyid: 'e07527755f4f7e9172cc176936dd043a',
@@ -146,24 +150,76 @@ function searchCafe(lat, lng, distance) {
         params:params
     })
     .then(function(response) {
+        // wifi/電源のあるレストランの情報を取得して、cafesに格納する
         for (let i = 0; i < response.data.rest.length; i++) {
             latlng = new google.maps.LatLng({lat: Number(response.data.rest[i].latitude), lng: Number(response.data.rest[i].longitude)});
 
             // 数字をキーにする場合は、ブラケット記法にしなくてはならないのか
             cafes[i] = {
-                    name: response.data.rest[i].name,
-                    latlng: latlng,
-                    url: response.data.rest[i].url,
-                    mobileUrl: response.data.rest[i].url_mobile,
-                    address: response.data.rest[i].address,
-                    opentime: response.data.rest[i].opentime
-                }
+                name: response.data.rest[i].name,
+                latlng: latlng,
+                url: response.data.rest[i].url,
+                mobileUrl: response.data.rest[i].url_mobile,
+                address: response.data.rest[i].address,
+                opentime: response.data.rest[i].opentime
             }
-        for (let i = 0; i < Object.keys(cafes).length; i++) {
-            putResultMarker(cafes[i].latlng, i + 1);
-        }
 
-    }).catch(function(error) {
+            // 検索の始点から懸隔されたレストランへの距離・時間を取得。これをforの中で使うとAPIコールの数が増えてしまう気がするけど、とりあえずはこれで実装。後で見直し
+            const service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix(
+                {
+                    origins: [startLatLng],
+                    destinations: [latlng],
+                    travelMode: 'WALKING',
+                }, (response, status) => {
+                    if (status == 'OK') {
+                        cafes[i].distance = response.rows[0].elements[0].distance.text;
+                        cafes[i].duration = response.rows[0].elements[0].duration.text;
+                    }
+                });
+        }
+    })
+    .then(function() {
+        // cafes.sort((a, b) => {
+        //     if(Number(a.duration.slice(0, -1) > b.duration.slice(0, -1))) return -1;
+        //     if(Number(a.duration.slice(0, -1) < b.duration.slice(0, -1))) return 1;
+        //     return 0;
+        // })
+
+        // cafesに格納された各レストランについて、地図上にマーカーを表示し、特定の情報をsearch_resultsに表示する
+        for (let i = 0; i < cafes.length; i++) {
+            // マーカーの表示
+            const resultMarker = new google.maps.Marker({
+                map: map,
+                position: cafes[i].latlng,
+                animation: google.maps.Animation.DROP,
+                // デザインについてはこちらを参照 https://maps.multisoup.co.jp/blog/1881/
+                label: {
+                    text: String(i + 1),                           //ラベル文字
+                    color: '#FFFFFF',                    //文字の色
+                    fontSize: '20px'                     //文字のサイズ
+                }
+            });
+
+            // レストラン情報の表示
+            const html = `
+            <div class="search_result" id="result_${i + 1}">
+                <a href="${cafes[i].url}" target="_blank" rel="noopener noreferrer" class="name">${cafes[i].name}</a>
+                <span class="distance">${cafes[i].distance}</span>
+                <span class="duration">${cafes[i].duration}</span><br>
+                <p class="opentime">営業時間：${cafes[i].opentime}</p><br>
+                <p class="address">住所：${cafes[i].address}</p>
+            </div>`
+            $('.search_results').append(html);
+
+            // 地図上に表示されたマーカーをクリックすると、該当するレストラン情報のところにスクロールされる
+            google.maps.event.addListener(resultMarker, 'click', function(event) {
+                $('.search_results').css('display', 'block');
+                $('.search_results').scrollTop($('.search_results').scrollTop() + $('#result_'+ (i + 1)).position().top);
+            });
+        }
+    })
+    .catch(function(error) {
         alert(error);//通信Error
     });
 }
@@ -183,4 +239,8 @@ $('body').on('keydown', function(e) {
         setStartPosition();
         searchCafe(startCoordinates.lat, startCoordinates.lng);
     }
+});
+
+$("#close_btn").on('click', function() {
+    $('.search_results').css('display', '');
 });

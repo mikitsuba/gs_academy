@@ -48,6 +48,8 @@
     top: 5px;
     left: 0;
     width: 430px;
+    height: 90%;
+    overflow: auto;
     padding: 10px;
     background-color:#ffffff;
     border-radius: 5px;
@@ -64,8 +66,13 @@
     font-size:20px;
 }
 
+.logo_in_result{
+    font-size: 1.2rem;
+}
+
 .search_result {
-    margin: 10px 0;
+    padding: 10px 0;
+    line-height: 1.2rem;
     border-top: solid 1px lightgrey;
 }
 
