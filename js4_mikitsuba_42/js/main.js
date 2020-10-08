@@ -137,7 +137,7 @@ function putResultMarker(latlng, num) {
 let cafes = [];
 function searchCafe(lat, lng, distance) {
     const params = {
-        keyid: 'e07527755f4f7e9172cc176936dd043a',
+        keyid: '',
         latitude: lat,
         longitude: lng,
         range: distance,
