@@ -1,0 +1,16 @@
+.title {
+    text-align: center;
+    font-size: 32px;
+    color: blue;
+    margin: 20px 0;
+}
+
+.form{
+    display: flex;
+    justify-content: center;
+}
+
+.form_title {
+    padding: 0 30px 10px 0;
+    font-weight: bold;
+}

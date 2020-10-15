@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+table, td, th {
+    border: 1px gray solid;
+}
+
+table {
+    margin-top: 20px;
+}
+
+td, th {
+    padding: 5px;
+}
