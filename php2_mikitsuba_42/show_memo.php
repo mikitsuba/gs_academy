@@ -7,7 +7,7 @@ include('./common.php');
 $user_id = $_POST['user_id'];
 
 // データベース接続
-$pdo = connectDb('memopad');
+$pdo = connectDb('mikitsuba_memopad');
 
 // データ取得SQL作成
 $stmt = $pdo->prepare("SELECT * FROM memo where user_id = :user_id");

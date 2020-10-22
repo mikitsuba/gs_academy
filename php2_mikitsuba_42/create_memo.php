@@ -11,7 +11,7 @@ $size = $_POST['size'];
 $position = $_POST['position'];
 
 // データベース接続
-$pdo = connectDb('memopad');
+$pdo = connectDb('mikitsuba_memopad');
 
 // データ登録SQL作成
 $stmt = $pdo->prepare("INSERT INTO memo(id, user_id, title, contents, color, size, position) VALUES (NULL, :user_id, :title, :contents, :color, :size, :position)");

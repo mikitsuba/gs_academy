@@ -7,7 +7,7 @@ $user_id = $_POST['user_id'];
 $search = $_POST['search'];
 
 // データベース接続
-$pdo = connectDb('memopad');
+$pdo = connectDb('mikitsuba_memopad');
 
 // データ取得SQL作成
 $stmt = $pdo->prepare("SELECT id FROM memo WHERE user_id = :user_id AND (title LIKE :search OR contents LIKE :search)");

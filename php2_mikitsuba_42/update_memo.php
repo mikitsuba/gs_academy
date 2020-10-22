@@ -13,7 +13,7 @@ $size = $_POST['size'];
 $position = $_POST['position'];
 
 // データベース接続
-$pdo = connectDb('memopad');
+$pdo = connectDb('mikitsuba_memopad');
 
 // データアップデートSQL作成
 $stmt = $pdo->prepare("UPDATE memo SET title = :title, contents = :contents, color = :color, size = :size, position=:position WHERE id = :id and user_id = :user_id"); //user_idを条件に足しているのは、第三者が偶然にidを取得してしまったときに、編集できないようにするため

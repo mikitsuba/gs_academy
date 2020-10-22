@@ -13,6 +13,17 @@ const MEDIUM = '250px';
 const LARGE = '300px';
 
 
+// 高さを取得して、その値をCSS書き込む（これにより、画面の高さに合わせることができる）
+$(document).ready(function () {
+    const hsize = $(window).height();
+    $("body").css("height", hsize + "px");
+});
+$(window).resize(function () {
+    const hsize = $(window).height();
+    $("body").css("height", hsize + "px");
+});
+
+
 // user_idの取得&保存
 let user_id;
 $(function() {
