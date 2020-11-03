@@ -1,0 +1,160 @@
+/* map */
+#map {
+    position: relative;
+}
+
+/* search bar https://kagesai.net/search-form-design/ */
+#search_form{
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width:400px;
+    margin-bottom:20px;
+    margin-left: 20px;
+}
+
+#search_bar{
+    height:50px;
+    width: 100%;
+    padding:0 5px;
+    position:absolute;
+    left:0;
+    top:0;
+    border-radius:5px;
+    outline:0;
+    background:#eee;
+    font-size: 1rem;
+}
+
+.fas {
+    background:none;
+    border:none;
+    font-size:20px; /*アイコンサイズ*/
+    cursor: pointer;
+}
+
+#search_btn{
+    position:absolute;
+    right:30px;/*アイコン左右の位置調整*/
+    top:15px;
+    color:#666;
+}
+
+#search_btn:hover{
+    color:#7fbfff;
+}
+
+.search_history {
+    display: none;
+    position: absolute;
+    top: 54px;
+    left: 0px;
+    padding: 5px;
+    width: 100%;
+    background: white;
+    border: solid 2px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+#search_settings_btn{
+    position: absolute;
+    right:0px;/*アイコン左右の位置調整*/
+    top:15px;
+    color:#666;
+}
+
+.search_settings {
+    display: none;
+    position: absolute;
+    top: 54px;
+    left: 0px;
+    padding: 5px;
+    width: 100%;
+    height: 50px;
+    background: white;
+    border: solid 2px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+ul#search_ranges::before {
+    content: "Range: ";
+}
+
+ul#search_ranges {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    height: 50%;
+}
+
+ul#search_ranges>li {
+    cursor: pointer;
+}
+
+ul#travel_modes::before {
+    content: "Mode: ";
+}
+
+ul#travel_modes {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    height: 50%;
+}
+
+
+/* results_box */
+.results_box {
+    display: none;
+    position: absolute; /* z-indexを効かせるために必要 */
+    top: 5px;
+    left: 0;
+    width: 430px;
+    height: 90%;
+    overflow: auto;
+    background-color:#ffffff;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.results_header {
+    position: fixed;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 410px;
+    border-bottom: solid 1px lightgray;
+    font-size: 1.2rem;
+    background-color: white;
+}
+
+.search_results {
+    padding: 10px;
+    margin-top: 40px;
+    box-sizing: border-box;
+    width: 430px;
+}
+
+#close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.logo_in_result {
+
+}
+
+.search_result {
+    padding: 10px 0;
+    width: 97%;
+    line-height: 1.2rem;
+    border-bottom: solid 1px lightgrey;
+}
+
+.name {
+    font-size: 1.2rem;
+}
