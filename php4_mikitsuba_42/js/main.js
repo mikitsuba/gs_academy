@@ -117,9 +117,13 @@ function showSearchHistory() {
                 temp_array.push(response[i].query);
             }
             const tempSet = Array.from(new Set(temp_array));
+            console.log(tempSet);
+            while (tempSet.length > 5) {
+                tempSet.pop();
+            }
 
-            // 検索履歴10件を検索履歴窓内に表示する
-            for (let i = 0; i < 10; i++) {
+            // 検索履歴を検索履歴窓内に表示する
+            for (let i = 0; tempSet.length; i++) {
                 const html = `
                     <div class="past_query">${tempSet[i]}</div>
                 `
@@ -165,7 +169,7 @@ function searchCafe(array, coordinates, distance, offset) {
     return new Promise((resolve, reject) => {
         // Ajax通信開始
         $.get('https://api.gnavi.co.jp/RestSearchAPI/v3/', {
-                keyid: 'e07527755f4f7e9172cc176936dd043a', //ぐるなびのAPIキー
+                keyid: '', //ぐるなびのAPIキー
                 latitude: Number(coordinates.lat),
                 longitude: Number(coordinates.lng),
                 range: distance, // 検索の範囲（開始地点からの距離）
